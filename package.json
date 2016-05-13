@@ -1,0 +1,41 @@
+{
+  "name": "chat",
+  "description": "A simple chat app using Vue, socket, and Node.",
+  "author": "Terry Harvey",
+  "scripts": {
+    "watchify": "watchify -vd -p browserify-hmr -e src/main.js -o dist/build.js",
+    "serve": "http-server -c 1 -a localhost",
+    "dev": "npm-run-all --parallel watchify",
+    "build": "cross-env NODE_ENV=production browserify src/main.js | uglifyjs -c warnings=false -m > dist/build.js"
+  },
+  "dependencies": {
+    "express": "^4.13.4",
+    "jquery": "^2.2.3",
+    "socket.io": "^1.4.6",
+    "vue": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.0.0",
+    "babel-plugin-transform-runtime": "^6.0.0",
+    "babel-preset-es2015": "^6.0.0",
+    "babel-preset-stage-2": "^6.0.0",
+    "babel-runtime": "^6.0.0",
+    "cross-env": "^1.0.6",
+    "babelify": "^7.2.0",
+    "browserify": "^12.0.1",
+    "browserify-hmr": "^0.3.1",
+    "http-server": "^0.9.0",
+    "npm-run-all": "^1.6.0",
+    "uglify-js": "^2.5.0",
+    "vue-hot-reload-api": "^1.2.2",
+    "vueify": "^8.0.0",
+    "vueify-insert-css": "^1.0.0",
+    "watchify": "^3.4.0"
+  },
+  "browserify": {
+    "transform": [
+      "vueify",
+      "babelify"
+    ]
+  }
+}
