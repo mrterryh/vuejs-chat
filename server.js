@@ -4,6 +4,9 @@ var app = express();
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 
+/**
+ * Set up a basic Express server.
+ */
 app.set('port', 3000);
 app.use(express.static(__dirname + '/'));
 
@@ -15,12 +18,25 @@ server.listen(app.get('port'), function() {
     console.log('Express server listening.');
 });
 
+/**
+ * Declare some variables for later use.
+ */
 var onlineUsers = {};
 var sentMessages = [];
 
+/**
+ * Listen for a new connection on the server.
+ */
 io.on('connection', function(socket) {
     console.log('Socket connected with ID of ' + socket.id);
 
+    /**
+     * This will be fired when a user enters a username. The server will
+     * associate the username with the socket ID and store it in,
+     * $onlineUsers then emit a message to the client which
+     * will in turn output a "XYZ has joined" message to
+     * all connected users.
+     */
     socket.on('user logged in', function(username) {
         console.log('%s has joined the chat!', username);
 
@@ -35,6 +51,13 @@ io.on('connection', function(socket) {
         });
     });
 
+    /**
+     * This will get fired whenever a user submits a message to the chat. The
+     * server will create a message object to store all of the various
+     * metadata and store it in $sentMessages. It will then emit a
+     * message to the client to tell it to output the message
+     * in the chat to all users.
+     */
     socket.on('send message', function(message) {
         var senderUsername = onlineUsers[socket.id];
 
@@ -53,6 +76,11 @@ io.on('connection', function(socket) {
         io.emit('message received', messageObject);
     });
 
+    /**
+     * Listens for when an admin clicks the "kick" link on the online users list.
+     * The server will try to find the socket associated with the given username
+     * and disconnect it if it exists.
+     */
     socket.on('kick user', function(username) {
         var socketId = Object.keys(onlineUsers).filter(function(key) {
             return onlineUsers[key] == username;
