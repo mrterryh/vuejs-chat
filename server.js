@@ -92,4 +92,25 @@ io.on('connection', function(socket) {
 
         console.log('%s has been kicked from the chat.', username);
     });
+
+    /**
+     * Gets fired when a user leaves the page. It will remove their session
+     * from $onlineUsers and broadcast a message to the client to alert
+     * everyone in the chat that the user has disconnected.
+     */
+    socket.on('disconnect', function() {
+        var username = onlineUsers[socket.id];
+
+        delete onlineUsers[socket.id];
+
+        console.log('%s has disconnected from the chat.', username);
+
+        io.emit('user left', {
+            socketId: socket.id,
+            username: username,
+            timestamp: new Date,
+            type: 'alert',
+            message: username + ' has disconnected from the chat!'
+        });
+    });
 });

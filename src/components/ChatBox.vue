@@ -51,6 +51,11 @@
                 chatbox.messages.push(message)
                 chatbox.onlineUsers.push(message.username)
             })
+
+            this.$parent.socket.on('user left', function(message) {
+                chatbox.messages.push(message)
+                chatbox.onlineUsers.$remove(message.username)
+            })
         },
 
         methods: {
@@ -70,9 +75,6 @@
 
                 // Tell the server to kick them from the chat
                 this.$parent.socket.emit('kick user', usernameToKick)
-
-                // Delete the user from the online users (client)
-                this.onlineUsers.$remove(usernameToKick)
             }
         },
 
