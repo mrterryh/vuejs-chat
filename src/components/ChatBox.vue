@@ -1,5 +1,5 @@
 <template>
-    <div id="ChatBox" class="row">
+    <div id="ChatBox">
         <div class="col-md-9 ChatBox__Left">
             <div class="ChatBox__List">
                 <chat-message v-for="message in messages" :data="message"></chat-message>
@@ -89,6 +89,7 @@
     #ChatBox {
         width: 100%;
         height: 100%;
+        margin-right: 0;
     }
 
     #Chat__ChatBox ul {
@@ -99,6 +100,13 @@
 
     .ChatBox__Left {
         padding-right: 0;
+    }
+
+    .ChatBox__Right {
+        height: 100vh;
+        border-left: 1px solid #eee;
+        background: #F7F7F7;
+        box-shadow: -10px 0 40px #F1F1F1;
     }
 
     .ChatBox__List {
